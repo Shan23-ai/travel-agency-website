@@ -255,6 +255,11 @@ app.get('/api/track-application', (req, res) => {
   res.json({ found: true, application: found });
 });
 
+/* ---- Homepage ---- */
+app.get('/', (req, res) => {
+  res.sendFile(path.join(staticRoot, 'index.html'));
+});
+
 /* ---- 404 Handler ---- */
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });
@@ -266,13 +271,17 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(staticRoot, 'index.html'));
-});
-
 if (require.main === module) {
-  app.listen(config.port, () => {
+  const server = app.listen(config.port, '0.0.0.0', () => {
     console.log(`Pascal Travels API running on http://localhost:${config.port}`);
+  });
+  
+  server.on('error', (err) => {
+    console.error(`Server error: ${err.message}`);
+    if (err.code === 'EADDRINUSE') {
+      console.error(`Port ${config.port} is already in use`);
+    }
+    process.exit(1);
   });
 }
 
