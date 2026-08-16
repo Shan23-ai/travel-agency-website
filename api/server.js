@@ -46,6 +46,9 @@ const store = {
 
 // Create Express app
 const app = express();
+const staticRoot = path.join(__dirname, '..', 'www');
+
+app.use(express.static(staticRoot));
 
 /* ---- Security middleware ---- */
 app.use(helmet({
@@ -262,6 +265,16 @@ app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).json({ error: 'Internal server error' });
 });
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(staticRoot, 'index.html'));
+});
+
+if (require.main === module) {
+  app.listen(config.port, () => {
+    console.log(`Pascal Travels API running on http://localhost:${config.port}`);
+  });
+}
 
 // Export for Vercel
 module.exports = app;
