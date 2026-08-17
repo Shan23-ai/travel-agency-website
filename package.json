@@ -7,7 +7,7 @@
     "start": "node api/server.js",
     "dev": "nodemon api/server.js",
     "build": "npm install",
-    "test": "echo 'Testing...'",
+    "test": "node --test tests/*.test.js",
     "postinstall": "npm run setup-dirs || true",
     "setup-dirs": "mkdir -p public/assets/images && mkdir -p uploads"
   },
@@ -20,12 +20,13 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.7",
     "uuid": "^9.0.1",
-    "compression": "^1.7.4"
+    "compression": "^1.7.4",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
   },
   "engines": {
-    "node": "24.x"
+    "node": "18.x"
   }
 }
